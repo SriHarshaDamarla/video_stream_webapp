@@ -1,0 +1,40 @@
+<!Doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Watch Wave Home</title>
+    <link rel="stylesheet" th:href="@{/commonStyles/headerStyles.css}" />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<header class="main-header">
+    <h1 class="page-title">Watch Wave</h1>
+    <nav class="navigation">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/movies}">Movies</a>
+        <a th:href="@{/series}">Web Series</a>
+    </nav>
+    <div class="button-container">
+        <div class="btn">Create your Wave</div>
+    </div>
+</header>
+<main class="main-container">
+    <!--/*@thymesVar id="movieList" type="java.util.List"*/-->
+    <!--/*@thymesVar id="movie" type="com.wave.beans.MovieMetaData"*/-->
+    <div class="movie-data" th:each="movie : ${movieList}">
+        <img class="thumbnail" th:src="@{'/load/'+${movie.folderId}+'/'+${movie.folderId + '_thumbnail.jpg'}}" th:alt="${movie.folderId} + ' thumbnail'"/>
+        <div class="metadata">
+            <span th:text="${movie.title}"></span>
+            <span th:text="${movie.resolutionName}"></span>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
