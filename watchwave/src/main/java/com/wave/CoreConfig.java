@@ -31,6 +31,7 @@ public class CoreConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/commonStyles/**").addResourceLocations("classpath:/commonStyles/");
+        registry.addResourceHandler("/commonJS/**").addResourceLocations("classpath:/commonJS/");
     }
     @Bean
     public ResourceBundleMessageSource messageSource() {

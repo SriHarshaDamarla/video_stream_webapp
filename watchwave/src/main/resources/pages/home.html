@@ -11,6 +11,7 @@
             href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
             rel="stylesheet"
     />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 <header class="main-header">
@@ -27,7 +28,8 @@
 <main class="main-container">
     <!--/*@thymesVar id="movieList" type="java.util.List"*/-->
     <!--/*@thymesVar id="movie" type="com.wave.beans.MovieMetaData"*/-->
-    <div class="movie-data" th:each="movie : ${movieList}">
+    <div class="movie-data" th:each="movie : ${movieList}" th:data-folderId="${movie.folderId}" th:onclick="'javascript:loadPlayer(this);'">
+        <i class="ph-fill ph-play play-icon"></i>
         <img class="thumbnail" th:src="@{'/load/'+${movie.folderId}+'/'+${movie.folderId + '_thumbnail.jpg'}}" th:alt="${movie.folderId} + ' thumbnail'"/>
         <div class="metadata">
             <span th:text="${movie.title}"></span>
@@ -35,6 +37,6 @@
         </div>
     </div>
 </main>
-
+<script th:src="@{/commonJS/home.js}"></script>
 </body>
 </html>

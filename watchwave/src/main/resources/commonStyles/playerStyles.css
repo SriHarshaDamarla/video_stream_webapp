@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+.video-container{
+    margin-top: 40px;
+    margin-left: 40px;
+    position: relative;
+    cursor: none;
+    width: 900px;
+}
+#video{
+    width: 100%;
+}
+.controls{
+    position: absolute;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgba(156, 54, 181, 0.5);
+    bottom: 4px;
+    display: none;
+    width: 100%;
+    gap: 20px;
+    justify-content: space-between;
+}
+#play-pause{
+    font-size: 25px;
+    color: #fff;
+}
+#mute{
+    font-size: 25px;
+    color: #fff;
+}
+#full-screen{
+    font-size: 25px;
+    color: #fff;
+}
+
+.display-flex{
+    display: flex !important;
+}
+
+.display-cursor{
+    cursor: default !important;
+}
