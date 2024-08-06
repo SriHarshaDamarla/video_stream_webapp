@@ -6,6 +6,7 @@ const volumeBar = document.getElementById("volume-bar");
 const fullScreenButton = document.getElementById("full-screen");
 const audioTracksSelect = document.getElementById("audio-tracks");
 const subtitleTracksSelect = document.getElementById("subtitle-tracks");
+const resolutionSelect = document.getElementById("resolution");
 const videoContainer = document.getElementsByClassName("video-container").item(0);
 
 var isFullScreen = false;
@@ -17,6 +18,22 @@ if (Hls.isSupported()) {
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
         console.log("Video ready to play!");
+    });
+
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data){
+       var availableQualities = hls.levels.map(level => level.height);
+        availableQualities.forEach((quality, index) => {
+            var option = document.createElement('option');
+            option.value = index;
+            option.text = quality + 'p';
+            resolutionSelect.appendChild(option);
+            resolutionSelect.options.selectedIndex = 0;
+            hls.currentLevel = resolutionSelect.value;
+        });
+    });
+
+    resolutionSelect.addEventListener('change', function() {
+        hls.currentLevel = this.value;
     });
 
     hls.on(Hls.Events.AUDIO_TRACKS_UPDATED, function (event, data) {

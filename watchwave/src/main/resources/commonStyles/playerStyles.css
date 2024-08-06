@@ -5,6 +5,9 @@
     font-family: "Inter", sans-serif;
 }
 .video-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 40px;
     margin-left: 40px;
     position: relative;
@@ -19,7 +22,7 @@
     padding-left: 20px;
     padding-right: 20px;
     background-color: rgba(156, 54, 181, 0.5);
-    bottom: 4px;
+    bottom: 0px;
     display: none;
     width: 100%;
     gap: 20px;
