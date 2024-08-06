@@ -10,6 +10,7 @@ const resolutionSelect = document.getElementById("resolution");
 const videoContainer = document.getElementsByClassName("video-container").item(0);
 
 var isFullScreen = false;
+var isResolutionSet = false;
 
 if (Hls.isSupported()) {
     const hls = new Hls();
@@ -20,20 +21,21 @@ if (Hls.isSupported()) {
         console.log("Video ready to play!");
     });
 
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data){
-       var availableQualities = hls.levels.map(level => level.height);
-        availableQualities.forEach((quality, index) => {
-            var option = document.createElement('option');
-            option.value = index;
-            option.text = quality + 'p';
-            resolutionSelect.appendChild(option);
-            resolutionSelect.options.selectedIndex = 0;
-            hls.currentLevel = resolutionSelect.value;
-        });
-    });
-
     resolutionSelect.addEventListener('change', function() {
         hls.currentLevel = this.value;
+    });
+
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data){
+       var availableQualities = hls.levels.map(level => level.height);
+       if(!isResolutionSet){
+           availableQualities.forEach((quality, index) => {
+               var option = document.createElement('option');
+               option.value = index;
+               option.text = quality + 'p';
+               resolutionSelect.appendChild(option);
+           });
+           resolutionSelect.value = resolutionSelect.options.length -1;
+       }
     });
 
     hls.on(Hls.Events.AUDIO_TRACKS_UPDATED, function (event, data) {
