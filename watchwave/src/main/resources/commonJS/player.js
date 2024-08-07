@@ -8,9 +8,13 @@ const audioTracksSelect = document.getElementById("audio-tracks");
 const subtitleTracksSelect = document.getElementById("subtitle-tracks");
 const resolutionSelect = document.getElementById("resolution");
 const videoContainer = document.getElementsByClassName("video-container").item(0);
+const currentTimeElement = document.getElementById("currentStamp");
+const durationElement = document.getElementById("totalDuration");
+const subElement = document.getElementById("subtitles-container");
 
 var isFullScreen = false;
 var isResolutionSet = false;
+let isEventAdded = false;
 
 if (Hls.isSupported()) {
     const hls = new Hls();
@@ -69,6 +73,14 @@ if (Hls.isSupported()) {
 
     subtitleTracksSelect.addEventListener("change", () => {
         hls.subtitleTrack = subtitleTracksSelect.value;
+        let tt = video.textTracks;
+        for(let i = 0; i < tt.length; i++) {
+            if(i == subtitleTracksSelect.value){
+                tt[i].mode = 'showing';
+            } else {
+                tt[i].mode = 'disabled';
+            }
+        }
     });
 }
 
@@ -87,12 +99,39 @@ playPauseButton.addEventListener("click", () => {
 });
 
 video.addEventListener("timeupdate", () => {
+    if(!isEventAdded){
+        let tt = video.textTracks;
+        for(let i=0; i<tt.length;i++){
+            tt[i].addEventListener("cuechange",function () {
+                if(tt[i].mode == 'showing'){
+                    let ac = tt[i].activeCues;
+                    if(ac && ac.length == 0){
+                        subElement.innerHTML = "";
+                    } else if(ac && ac.length > 0){
+                        subElement.innerHTML = "";
+                        for(let j=0; j<ac.length; j++){
+                            let pEle = document.createElement("p");
+                            pEle.innerHTML = ac[j].text;
+                            pEle.innerHTML = pEle.innerHTML.replace("\n","<br>");
+                            subElement.appendChild(pEle);
+                        }
+                    }
+                }
+            });
+        }
+        isEventAdded = true;
+    }
     seekBar.value = (video.currentTime / video.duration) * 100;
+    durationElement.innerHTML = "";
+    durationElement.innerHTML = getTimeStamp(video.duration);
+    currentTimeElement.innerHTML = "";
+    currentTimeElement.innerHTML = getTimeStamp(video.currentTime);
+    seekBar.style.background = `linear-gradient(to right, #d6336c ${seekBar.value}% , #f8f9fa ${seekBar.value}%)`;
 });
 
 seekBar.addEventListener("input", () => {
-    console.log(video.duration);
     video.currentTime = (seekBar.value / 100) * video.duration;
+    seekBar.style.background = `linear-gradient(to right, #d6336c ${seekBar.value}% , #f8f9fa ${seekBar.value}%)`;
 });
 
 muteButton.addEventListener("click", () => {
@@ -152,9 +191,22 @@ videoContainer.addEventListener("mousemove", function () {
     var controls = document.getElementsByClassName("controls").item(0);
     controls.classList.add('display-flex');
     videoContainer.classList.add('display-cursor');
+    subElement.classList.add('subtitles-transform');
     clearTimeout(timeout);
     timeout = setTimeout(function () {
         controls.classList.remove('display-flex');
         videoContainer.classList.remove('display-cursor');
+        subElement.classList.remove('subtitles-transform');
     }, 5000);
 });
+
+function getTimeStamp(seconds){
+    var minutes = Math.floor(seconds / 60);
+    var remainingSeconds = Math.floor(seconds % 60);
+    var hours = Math.floor(minutes / 60);
+    var remainingMinutes = minutes % 60;
+    var totalDuration = hours == 0 ? "00:" : hours+":";
+    totalDuration = totalDuration + (remainingMinutes == 0 ? "00:" : remainingMinutes < 10 ? "0"+remainingMinutes+":" : remainingMinutes+":");
+    totalDuration = totalDuration + (remainingSeconds == 0 ? "00" : remainingSeconds < 10 ? "0"+remainingSeconds : remainingSeconds);
+    return totalDuration;
+}

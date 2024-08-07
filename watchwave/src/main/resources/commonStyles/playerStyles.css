@@ -14,22 +14,67 @@
     cursor: none;
     width: 900px;
 }
+#subtitles-container{
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    color: #f8f9fa;
+}
+.subtitles-transform{
+    bottom: 80px !important;
+}
 #video{
     width: 100%;
 }
 .controls{
     position: absolute;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: rgba(156, 54, 181, 0.5);
+    padding: 20px;
+    background-color: rgba(222, 226, 230, 0.5);
     bottom: 0px;
     display: none;
     width: 100%;
     gap: 20px;
     justify-content: space-between;
+    z-index: 2;
+}
+#seek-bar{
+    appearance: none;
+    height: 8px;
+    width: 100%;
+    background: #f8f9fa;
+    outline: none;
+    border-radius: 8px;
+}
+#seek-bar::-webkit-slider-thumb{
+    position: relative;
+    pointer-events: auto;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ced4da;
+    cursor: pointer;
+    border: 2px solid #7048e8;
+}
+.seek-bar-container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05), #dee2e6);
+    border-radius: 30px;
+    box-shadow: 2px 2px 4px rgba(248, 249, 250, 0.5), -2px -2px 4px #f1f3f5;
+    width: 100%;
+    padding: 8px;
 }
 #play-pause{
     font-size: 25px;
+    color: #fff;
+}
+.time-div{
+    font-size: 20px;
     color: #fff;
 }
 #mute{
@@ -43,8 +88,13 @@
 
 .display-flex{
     display: flex !important;
+    flex-wrap: wrap;
 }
 
 .display-cursor{
     cursor: default !important;
+}
+::cue {
+    color: rgba(0, 0, 0, 0);
+    background: none;
 }

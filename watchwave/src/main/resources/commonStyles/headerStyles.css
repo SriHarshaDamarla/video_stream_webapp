@@ -118,3 +118,17 @@ a:hover,a:active{
     transform: translate(-50%, -50%);
     display: none;
 }
+
+.small-black-box{
+    padding: 3px;
+    font-size: 12px;
+    background-color: #868e96;
+    border-radius: 6px;
+    color: #f8f9fa;
+    text-transform: uppercase;
+}
+
+.block{
+    display: inline-block;
+    margin-left: 10px;
+}

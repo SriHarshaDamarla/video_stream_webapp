@@ -33,7 +33,12 @@
         <img class="thumbnail" th:src="@{'/load/'+${movie.folderId}+'/'+${movie.folderId + '_thumbnail.jpg'}}" th:alt="${movie.folderId} + ' thumbnail'"/>
         <div class="metadata">
             <span th:text="${movie.title}"></span>
-            <span th:text="${movie.resolutionName}"></span>
+            <span th:text="${movie.resolutionName}" class="small-black-box"></span>
+        </div>
+        <div>
+            <span class="block">Audio: </span>
+            <!--/*@thymesVar id="languages" type="java.util.List"*/-->
+            <span th:each="lang : ${movie.languages}" th:text="${lang}" class="block small-black-box"></span>
         </div>
     </div>
 </main>

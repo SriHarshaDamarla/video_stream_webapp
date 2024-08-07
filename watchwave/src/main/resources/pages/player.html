@@ -15,8 +15,9 @@
 <div class="video-container" id="videoholder">
     <video id="video" width="600" type="application/x-mpegURL" th:data-title="${movieTitle}"></video>
     <div class="controls">
+        <div class="seek-bar-container"><input type="range" id="seek-bar" value="0" /></div>
         <div id="play-pause"><i class="ph-bold ph-play-circle"></i></div>
-        <input type="range" id="seek-bar" value="0" />
+        <div class="time-div"><span id="currentStamp">00:00:00</span> / <span id="totalDuration">00:00:00</span></div>
         <div id="mute"><i class="ph-bold ph-speaker-high"></i></div>
         <input
                 type="range"
@@ -31,6 +32,7 @@
         <select id="resolution"></select>
         <div id="full-screen"><i class="ph-bold ph-corners-out"></i></div>
     </div>
+    <div id="subtitles-container"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script th:src="@{/commonJS/player.js}"></script>
