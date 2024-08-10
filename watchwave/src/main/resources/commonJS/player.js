@@ -118,17 +118,26 @@ video.addEventListener("timeupdate", () => {
         }
         isEventAdded = true;
     }
+    let buffer = video.buffered;
+    let bufferedTill = buffer.end(buffer.length-1);
+    bufferedTill = bufferedTill - video.currentTime;
+    let pcnt = (bufferedTill / video.duration) * 100;
     seekBar.value = (video.currentTime / video.duration) * 100;
     durationElement.innerHTML = "";
     durationElement.innerHTML = getTimeStamp(video.duration);
     currentTimeElement.innerHTML = "";
     currentTimeElement.innerHTML = getTimeStamp(video.currentTime);
-    seekBar.style.background = `linear-gradient(to right, #d6336c ${seekBar.value}% , #f8f9fa ${seekBar.value}%)`;
+    pcnt = parseInt(seekBar.value)+pcnt;
+    seekBar.style.background = `linear-gradient(to right, #d6336c 0%, #d6336c ${seekBar.value}% ,#fcc2d7 ${seekBar.value}%,#fcc2d7 ${pcnt}%,#f8f9fa ${pcnt}%, #f8f9fa 100%)`;
 });
 
 seekBar.addEventListener("input", () => {
     video.currentTime = (seekBar.value / 100) * video.duration;
-    seekBar.style.background = `linear-gradient(to right, #d6336c ${seekBar.value}% , #f8f9fa ${seekBar.value}%)`;
+    let bufferedTill = buffer.end(buffer.length-1);
+    bufferedTill = bufferedTill - video.currentTime;
+    let pcnt = (bufferedTill / video.duration) * 100;
+    pcnt = parseInt(seekBar.value)+pcnt;
+    seekBar.style.background = `linear-gradient(to right, #d6336c 0%, #d6336c ${seekBar.value}% ,#fcc2d7 ${seekBar.value}%,#fcc2d7 ${pcnt}%,#f8f9fa ${pcnt}%, #f8f9fa 100%)`;
 });
 
 muteButton.addEventListener("click", () => {
@@ -171,12 +180,14 @@ document.addEventListener("fullscreenchange", function () {
     fullScreenButton.innerHTML ="";
    if(document.fullscreenElement){
        isFullScreen = true;
+       subElement.style.fontSize = '35px';
        var icon =document.createElement("i");
        icon.classList.add("ph-bold");
        icon.classList.add("ph-corners-in");
        fullScreenButton.appendChild(icon);
    }else {
        isFullScreen = false;
+       subElement.style.fontSize = '25px';
        var icon =document.createElement("i");
        icon.classList.add("ph-bold");
        icon.classList.add("ph-corners-out");
