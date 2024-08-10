@@ -11,6 +11,7 @@ const videoContainer = document.getElementsByClassName("video-container").item(0
 const currentTimeElement = document.getElementById("currentStamp");
 const durationElement = document.getElementById("totalDuration");
 const subElement = document.getElementById("subtitles-container");
+const buffElement = document.getElementsByClassName("buffer-div").item(0);
 
 var isFullScreen = false;
 var isResolutionSet = false;
@@ -26,7 +27,18 @@ if (Hls.isSupported()) {
     });
 
     resolutionSelect.addEventListener('change', function() {
+        let isPauseCalled = false;
+        if(!video.paused){
+            video.pause();
+            isPauseCalled = true;
+        }
+        buffElement.style.display = "flex";
         hls.currentLevel = this.value;
+        setTimeout(function () {
+            if(isPauseCalled){
+                video.play();
+            }
+        }, 1000);
     });
 
     hls.on(Hls.Events.MANIFEST_PARSED, function (event, data){
@@ -82,11 +94,19 @@ playPauseButton.addEventListener("click", () => {
     if (video.paused) {
         video.play();
         icon.classList.add("ph-pause-circle");
+        playPauseButton.appendChild(icon);
     } else {
         video.pause();
         icon.classList.add("ph-play-circle");
+        playPauseButton.appendChild(icon);
     }
-    playPauseButton.appendChild(icon);
+});
+
+video.addEventListener("playing", function () {
+   buffElement.style.display = "none";
+});
+video.addEventListener("waiting", function () {
+    buffElement.style.display = "flex";
 });
 
 video.addEventListener("timeupdate", () => {
@@ -133,6 +153,7 @@ video.addEventListener("timeupdate", () => {
 
 seekBar.addEventListener("input", () => {
     video.currentTime = (seekBar.value / 100) * video.duration;
+    let buffer = video.buffered;
     let bufferedTill = buffer.end(buffer.length-1);
     bufferedTill = bufferedTill - video.currentTime;
     let pcnt = (bufferedTill / video.duration) * 100;
@@ -205,7 +226,7 @@ videoContainer.addEventListener("mousemove", function () {
         controls.classList.remove('display-flex');
         videoContainer.classList.remove('display-cursor');
         subElement.classList.remove('subtitles-transform');
-    }, 5000);
+    }, 3000);
 });
 
 function getTimeStamp(seconds){

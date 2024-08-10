@@ -93,3 +93,16 @@
 .display-cursor{
     cursor: default !important;
 }
+.buffer-div{
+    opacity: 0.3;
+    background-color: white;
+    display: none;
+    align-items: center;
+    color: black;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
