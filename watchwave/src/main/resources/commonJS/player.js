@@ -67,20 +67,11 @@ if (Hls.isSupported()) {
     });
 
     audioTracksSelect.addEventListener("change", function () {
-        var selectedAudioTrack = parseInt(this.value);
-        hls.audioTrack = selectedAudioTrack;
+        hls.audioTrack = parseInt(this.value);
     });
 
     subtitleTracksSelect.addEventListener("change", () => {
         hls.subtitleTrack = subtitleTracksSelect.value;
-        let tt = video.textTracks;
-        for(let i = 0; i < tt.length; i++) {
-            if(i == subtitleTracksSelect.value){
-                tt[i].mode = 'showing';
-            } else {
-                tt[i].mode = 'disabled';
-            }
-        }
     });
 }
 
@@ -99,19 +90,25 @@ playPauseButton.addEventListener("click", () => {
 });
 
 video.addEventListener("timeupdate", () => {
+    let tt = video.textTracks;
+    for(let i = 0; i < tt.length; i++) {
+        tt[i].mode = 'hidden';
+    }
     if(!isEventAdded){
         let tt = video.textTracks;
         for(let i=0; i<tt.length;i++){
             tt[i].addEventListener("cuechange",function () {
-                if(tt[i].mode == 'showing'){
-                    let ac = tt[i].activeCues;
+                const index = i;
+                if(index === parseInt(subtitleTracksSelect.value)){
+                    let ac = tt[index].activeCues;
                     if(ac && ac.length == 0){
                         subElement.innerHTML = "";
                     } else if(ac && ac.length > 0){
                         subElement.innerHTML = "";
                         for(let j=0; j<ac.length; j++){
                             let pEle = document.createElement("p");
-                            pEle.innerHTML = ac[j].text;
+                            const subText = ac[j].text;
+                            pEle.innerHTML = ""+subText;
                             pEle.innerHTML = pEle.innerHTML.replace("\n","<br>");
                             subElement.appendChild(pEle);
                         }

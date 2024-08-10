@@ -32,7 +32,7 @@
     position: absolute;
     padding: 20px;
     background-color: rgba(222, 226, 230, 0.5);
-    bottom: 0px;
+    bottom: 0;
     display: none;
     width: 100%;
     gap: 20px;
@@ -93,8 +93,4 @@
 
 .display-cursor{
     cursor: default !important;
-}
-::cue {
-    color: rgba(0, 0, 0, 0);
-    background: none;
 }
