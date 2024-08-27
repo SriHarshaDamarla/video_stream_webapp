@@ -27,6 +27,7 @@ public class CoreConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/movies").setViewName("movies");
         registry.addViewController("/series").setViewName("series");
+        registry.addViewController("/filterError").setViewName("filterError");
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

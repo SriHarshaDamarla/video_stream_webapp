@@ -2,7 +2,10 @@ package com.wave.core.controller;
 
 import com.wave.beans.MovieMetaData;
 import com.wave.constants.Languages;
+import com.wave.core.util.AuthValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,12 @@ public class HomeController {
 
     @Value("${stream.location}")
     private String defaultStreamLocation;
+    private AuthValidator authValidator;
+
+    @Autowired
+    public void setAuthValidator(AuthValidator authValidator) {
+        this.authValidator = authValidator;
+    }
 
     @RequestMapping("/")
     public String homePage(Model model){
@@ -58,7 +67,13 @@ public class HomeController {
 
         return "home";
     }
-
+    @RequestMapping("/refreshIds")
+    public ResponseEntity<HashMap<String, String>> refreshIds(){
+        authValidator.refreshIdList();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("refreshIds", "successful");
+        return ResponseEntity.ok(map);
+    }
     private static Map<String,String> getMetaDataMap(List<String> lines){
         var result = new HashMap<String,String>();
         result = lines.stream().map(s -> s.split("=")).reduce(result,

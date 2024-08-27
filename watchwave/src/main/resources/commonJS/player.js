@@ -93,8 +93,6 @@ playPauseButton.addEventListener("click", () => {
     icon.classList.add("ph-bold");
     if (video.paused) {
         video.play();
-        icon.classList.add("ph-pause-circle");
-        playPauseButton.appendChild(icon);
     } else {
         video.pause();
         icon.classList.add("ph-play-circle");
@@ -103,6 +101,11 @@ playPauseButton.addEventListener("click", () => {
 });
 
 video.addEventListener("playing", function () {
+    playPauseButton.innerHTML ="";
+    let icon =document.createElement("i");
+    icon.classList.add("ph-bold");
+    icon.classList.add("ph-pause-circle");
+    playPauseButton.appendChild(icon);
    buffElement.style.display = "none";
 });
 video.addEventListener("waiting", function () {
