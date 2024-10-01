@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
@@ -72,6 +73,15 @@ public class HomeController {
         authValidator.refreshIdList();
         HashMap<String, String> map = new HashMap<>();
         map.put("refreshIds", "successful");
+        return ResponseEntity.ok(map);
+    }
+
+    @GetMapping("/getMemoryDetails")
+    public ResponseEntity<HashMap<String, String>> getMemoryDetails(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("totalHeap", Runtime.getRuntime().totalMemory() + " bytes");
+        map.put("freeHeap", Runtime.getRuntime().freeMemory() + " bytes");
+        map.put("maxHeap", Runtime.getRuntime().maxMemory() + " bytes");
         return ResponseEntity.ok(map);
     }
     private static Map<String,String> getMetaDataMap(List<String> lines){

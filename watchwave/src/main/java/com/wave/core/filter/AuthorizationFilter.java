@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Random;
 
 @Component
@@ -36,14 +37,25 @@ public class AuthorizationFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        Enumeration<String> headerNames = request.getHeaderNames();
+        System.out.println("------Printing header details-----");
+        while(headerNames.hasMoreElements()){
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName+" : "+request.getHeader(headerName));
+        }
         HttpSession session = request.getSession(false);
         if(session != null && session.getAttribute("otp") != null){
             String otp = session.getAttribute("otp").toString();
             if(authValidator.validateId(otp)){
+                Cookie cookie = new Cookie("otp", otp);
+                cookie.setPath("/");
+                cookie.setMaxAge(24*60*60);
+                response.addCookie(cookie);
                 filterChain.doFilter(request, response);
                 return;
             } else {
                 Cookie cookie = new Cookie("JSESSIONID", "");
+                cookie.setPath("/");
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
                 session.invalidate();
@@ -54,15 +66,15 @@ public class AuthorizationFilter implements Filter {
         System.out.println("Printing Cookie Details: ");
         StringBuilder authVal = new StringBuilder();
         if(cookies != null) {
-            Arrays.stream(cookies).peek(cookie -> {
+            Arrays.stream(cookies).forEach(cookie -> {
                 if(cookie.getName().equals("otp")){
                     if(authValidator.validateId(cookie.getValue())){
                         HttpSession newSession = request.getSession(true);
                         newSession.setAttribute("otp", cookie.getValue());
+                        newSession.setMaxInactiveInterval(24*60*60);
                         authVal.append("Authenticated");
                     }
                 }
-            }).forEach(cookie -> {
                 System.out.println(cookie.getName() + " : " + cookie.getValue());
             });
         }

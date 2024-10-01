@@ -9,9 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @ApplicationScope
@@ -21,6 +18,7 @@ public class AuthValidator {
     @Value("${idList.path}")
     private String ID_PATH;
 
+    @PostConstruct
     public void refreshIdList() {
         try {
             validIds = Files.readAllLines(Path.of(ID_PATH));

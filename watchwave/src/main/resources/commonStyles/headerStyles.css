@@ -104,8 +104,10 @@ a:hover,a:active{
 }
 
 .metadata{
+    width: 100%;
     padding-left: 10px;
     padding-right: 10px;
+    gap: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -118,7 +120,12 @@ a:hover,a:active{
     transform: translate(-50%, -50%);
     display: none;
 }
-
+.mv-title{
+    width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 .small-black-box{
     padding: 3px;
     font-size: 12px;

@@ -32,7 +32,7 @@
         <i class="ph-fill ph-play play-icon"></i>
         <img class="thumbnail" th:src="@{'/load/'+${movie.folderId}+'/'+${movie.folderId + '_thumbnail.jpg'}}" th:alt="${movie.folderId} + ' thumbnail'"/>
         <div class="metadata">
-            <span th:text="${movie.title}"></span>
+            <span th:text="${movie.title}" class="mv-title"></span>
             <span th:text="${movie.resolutionName}" class="small-black-box"></span>
         </div>
         <div>
